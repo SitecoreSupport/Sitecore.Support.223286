@@ -1,4 +1,6 @@
 ﻿using System.Collections.Specialized;
+using System.Linq;
+using Sitecore.Shell.Applications.ContentEditor;
 
 namespace Sitecore.Support.Pipelines.RenderField
 {
@@ -32,14 +34,14 @@ namespace Sitecore.Support.Pipelines.RenderField
       Assert.ArgumentNotNull(tag, "tag");
       Assert.ArgumentNotNull(args, "args");
       #region Added code
-      if (args.FieldTypeKey == "image")
+      NameValueCollection parameters = Sitecore.Web.WebUtil.ParseParameters(args.RawParameters, '&');
+      foreach (string key in Sitecore.Web.WebUtil.ParseParameters(args.RawParameters, '&'))
       {
-        NameValueCollection parameters = Sitecore.Web.WebUtil.ParseParameters(args.RawParameters, '&');
-        if (!string.IsNullOrEmpty(parameters["class"]))
+        if (!args.WebEditParameters.Keys.Contains(key))
         {
-          args.WebEditParameters.Add("class", parameters["class"]);
+          args.WebEditParameters.Add(key, parameters[key]);
         }
-      } 
+      }
       #endregion
       if (args.WebEditParameters.Count > 0)
       {

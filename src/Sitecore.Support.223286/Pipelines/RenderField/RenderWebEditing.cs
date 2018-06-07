@@ -42,6 +42,10 @@ namespace Sitecore.Support.Pipelines.RenderField
           args.WebEditParameters.Add(key, parameters[key]);
         }
       }
+      if (args.WebEditParameters["format"] == String.Empty)
+      {
+        args.WebEditParameters.Remove("format");
+      }
       #endregion
       if (args.WebEditParameters.Count > 0)
       {
